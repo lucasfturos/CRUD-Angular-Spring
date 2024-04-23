@@ -1,0 +1,14 @@
+name: "Update Angular Action"
+on: 
+  schedule:
+    - cron: '30 5 * * 3'
+
+jobs:
+  ngxUptodate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Updating ng dependencies
+        uses: fast-facts/ng-update@v1
+        with:
+          base-branch: main
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
