@@ -1,0 +1,17 @@
+<mat-card class="mat-elevation-z8">
+  <mat-toolbar>
+    <span>Cursos Disponíveis</span>
+  </mat-toolbar>
+
+  <app-courses-list
+    *ngIf="courses$ | async as courses; else loading"
+    [courses]="courses"
+    (add)="onAdd()"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+  ></app-courses-list>
+
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+</mat-card>

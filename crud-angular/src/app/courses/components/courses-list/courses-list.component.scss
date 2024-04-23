@@ -1,0 +1,32 @@
+mat-table {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.icon-category {
+  margin-left: 10px;
+}
+
+.action-column {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.action-column-header {
+  margin-right: 10px;
+}
+
+.btn-add {
+  background: #198754;
+  margin: 0 0 0 auto;
+}
+
+.btn-edit,
+.btn-del {
+  margin-right: 10px;
+}
+
+.btn-del {
+  background: #dc3545;
+}
