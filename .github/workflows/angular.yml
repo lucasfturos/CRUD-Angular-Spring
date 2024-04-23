@@ -26,11 +26,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: crud-angular/package-lock.json
-    - run: cd crud-angular/
-    - run: npm ci
+    - name: Run CI
+      run: cd crud-angular/
+      run: npm ci
 
     - name: Run Tests
+      run: cd crud-angular/
       run: npm run test:ci
 
     - name: Build
+      run: cd crud-angular/
       run: npm run build
