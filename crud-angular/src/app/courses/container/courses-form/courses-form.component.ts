@@ -53,7 +53,7 @@ export class CourseFormComponent {
       name: new FormControl<string>('', [
         Validators.required,
         Validators.minLength(5),
-        Validators.maxLength(200),
+        Validators.maxLength(100),
       ]),
       category: new FormControl<string>('', [Validators.required]),
     });
@@ -114,7 +114,7 @@ export class CourseFormComponent {
     if (field?.hasError('maxlength')) {
       const requiredLength = field.errors
         ? field.errors['maxlength']['requiredLength']
-        : 200;
+        : 100;
       return `Tamanho máximo necessário é de ${requiredLength} caracteres`;
     }
 

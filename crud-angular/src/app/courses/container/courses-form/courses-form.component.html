@@ -9,7 +9,7 @@
         <mat-label>Nome do Curso</mat-label>
         <input matInput placeholder="Ex: Angular" formControlName="name" />
         <mat-hint align="end"
-          >{{ form.get("name")?.value.length || 0 }}/200</mat-hint
+          >{{ form.get("name")?.value.length || 0 }}/100</mat-hint
         >
         @if (form.get('name')?.invalid) {
         <mat-error>{{ getErrorMessage("name") }}</mat-error>
@@ -34,13 +34,12 @@
         type="submit"
         class="btn-submit"
         (click)="onSubmit()"
+        [disabled]="!form.valid"
       >
         Salvar
       </button>
 
-      <button mat-raised-button [disabled]="!form.valid" (click)="onCancel()">
-        Cancelar
-      </button>
+      <button mat-raised-button (click)="onCancel()">Cancelar</button>
     </form>
   </mat-card-content>
 </mat-card>
