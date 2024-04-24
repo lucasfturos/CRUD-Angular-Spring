@@ -47,7 +47,8 @@ public class CourseService {
     }
 
     public boolean delete(@PathVariable @NotNull @Positive Long id) {
-        return courseRepository.findById(id)
+        return courseRepository
+                .findById(id)
                 .map(courseFound -> {
                     courseRepository.deleteById(id);
                     return true;

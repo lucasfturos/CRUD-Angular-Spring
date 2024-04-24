@@ -56,7 +56,8 @@ public class CoursesController {
     @PutMapping("/{id}")
     public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id,
             @RequestBody @Valid Course course) {
-        return courseService.update(id, course)
+        return courseService
+                .update(id, course)
                 .map(courseFound -> ResponseEntity.ok().body(courseFound))
                 .orElse(ResponseEntity.notFound().build());
     }
