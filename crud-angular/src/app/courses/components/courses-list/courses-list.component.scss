@@ -11,15 +11,16 @@ mat-table {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .action-column-header {
-  margin-right: 10px;
+  margin: 0 auto;
 }
 
 .btn-add {
   background: #198754;
-  margin: 0 0 0 auto;
+  margin-right: 10px;
 }
 
 .btn-edit,
