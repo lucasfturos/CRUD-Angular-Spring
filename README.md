@@ -2,7 +2,7 @@
 
 ## Executando o Servidor
 
-Angular:
+### Angular
 
 Entre na pasta do Angular:
 ```
@@ -13,7 +13,7 @@ E rode o comando para executar o serviço:
 npm run start
 ```
 
-Spring:
+### Spring
 
 Entre na pasta do Spring:
 ```
