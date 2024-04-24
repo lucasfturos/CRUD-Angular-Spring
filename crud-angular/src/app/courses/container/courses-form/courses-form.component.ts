@@ -1,12 +1,6 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,7 +18,6 @@ import { CoursesService } from '../../services/courses.service';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -44,7 +37,7 @@ export class CourseFormComponent {
 
   constructor(
     private coursesService: CoursesService,
-    private formBuilder: NonNullableFormBuilder,
+    private formBuilder: FormBuilder,
     private location: Location,
     private snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute

@@ -6,6 +6,7 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogRef,
+  MatDialogModule,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -15,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     MatDialogTitle,
     MatDialogContent,
+    MatDialogModule,
     MatIconModule,
     MatButtonModule,
     MatDialogActions,
