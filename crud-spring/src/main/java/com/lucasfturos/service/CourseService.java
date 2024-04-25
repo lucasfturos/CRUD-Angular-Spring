@@ -1,12 +1,12 @@
 package com.lucasfturos.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.lucasfturos.exception.NotFoundExeception;
 import com.lucasfturos.model.Course;
 import com.lucasfturos.repository.CourseRepository;
 
@@ -28,31 +28,27 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Optional<Course> findById(@PathVariable @NotNull @Positive Long id) {
-        return courseRepository.findById(id);
+    public Course findById(@PathVariable @NotNull @Positive Long id) {
+        return courseRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundExeception(id, "Course"));
     }
 
     public Course create(@Valid Course course) {
         return courseRepository.save(course);
     }
 
-    public Optional<Course> update(@PathVariable @NotNull @Positive Long id, @Valid Course course) {
+    public Course update(@PathVariable @NotNull @Positive Long id, @Valid Course course) {
         return courseRepository
                 .findById(id)
-                .map(courseFound -> {
-                    courseFound.setName(course.getName());
-                    courseFound.setCategory(course.getCategory());
-                    return courseRepository.save(courseFound);
-                });
+                .orElseThrow(() -> new NotFoundExeception(id, "Course"));
     }
 
-    public boolean delete(@PathVariable @NotNull @Positive Long id) {
-        return courseRepository
-                .findById(id)
-                .map(courseFound -> {
-                    courseRepository.deleteById(id);
-                    return true;
-                }).orElse(false);
+    public void delete(@PathVariable @NotNull @Positive Long id) {
+        courseRepository.delete(
+                courseRepository
+                        .findById(id)
+                        .orElseThrow(() -> new NotFoundExeception(id, "Course")));
     }
 
 }
