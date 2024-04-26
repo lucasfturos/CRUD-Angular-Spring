@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.lucasfturos.dto.CourseDTO;
 import com.lucasfturos.dto.mapper.CourseMapper;
@@ -35,7 +34,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findById(@NotNull @Positive Long id) {
         return courseRepository
                 .findById(id)
                 .map(courseMapper::toDTO)
@@ -43,22 +42,22 @@ public class CourseService {
     }
 
     public CourseDTO create(@Valid @NotNull CourseDTO course) {
-        return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
+        return courseMapper
+                .toDTO(courseRepository.save(courseMapper.toEntity(course)));
     }
 
-    public CourseDTO update(
-            @PathVariable @NotNull @Positive Long id, @Valid @NotNull CourseDTO course) {
+    public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO course) {
         return courseRepository
                 .findById(id)
                 .map(courseFound -> {
                     courseFound.setName(course.name());
-                    courseFound.setCategory(course.category());
+                    courseFound.setCategory(courseMapper.convertCategoryValue(course.category()));
                     return courseMapper.toDTO(courseRepository.save(courseFound));
                 })
                 .orElseThrow(() -> new NotFoundExeception(id, "Course"));
     }
 
-    public void delete(@PathVariable @NotNull @Positive Long id) {
+    public void delete(@NotNull @Positive Long id) {
         courseRepository.delete(
                 courseRepository
                         .findById(id)
