@@ -17,7 +17,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute } from '@angular/router';
 
+import { Lesson } from '../../model/lesson';
 import { CoursesService } from '../../services/courses.service';
+import { Course } from '../../model/course';
 
 @Component({
   selector: 'app-course-form',
@@ -38,8 +40,9 @@ import { CoursesService } from '../../services/courses.service';
   styleUrl: './courses-form.component.scss',
 })
 export class CourseFormComponent {
-  form: FormGroup;
+  form!: FormGroup;
   id: string = '';
+  dataCourse!: Course;
 
   constructor(
     private coursesService: CoursesService,
@@ -48,28 +51,53 @@ export class CourseFormComponent {
     private snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute
   ) {
-    this.form = this.formBuilder.group({
-      _id: new FormControl<string>(''),
-      name: new FormControl<string>('', [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(100),
-      ]),
-      category: new FormControl<string>('', [Validators.required]),
-    });
+    this.createFormBuilder({ _id: '', name: '', category: '', lessons: [] });
 
     this.activatedRoute.params.subscribe((params) => {
       this.id = params['id'];
-      if (this.id) {
+      if (this.id && params) {
         this.coursesService.loadById(this.id).subscribe({
           next: (data) => {
-            this.form.setValue(data);
+            this.createFormBuilder(data);
           },
           error: (err) => {
             console.error(err);
           },
         });
       }
+    });
+  }
+
+  private createFormBuilder(course: Course): void {
+    this.form = this.formBuilder.group({
+      _id: new FormControl<string>(course._id),
+      name: new FormControl<string>(course.name, [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100),
+      ]),
+      category: new FormControl<string>(course.category, [Validators.required]),
+      lessons: this.formBuilder.array(this.retrieveLesson(course)),
+    });
+  }
+
+  private retrieveLesson(course: Course) {
+    const lessons = [];
+    if (course?.lessons) {
+      course.lessons.forEach((lesson) =>
+        lessons.push(this.createLesson(lesson))
+      );
+    } else {
+      lessons.push(this.createLesson());
+    }
+    return lessons;
+  }
+
+  private createLesson(lesson: Lesson = { id: '', name: '', videoUrl: '' }) {
+    return this.formBuilder.group({
+      id: new FormControl<string>(lesson.id),
+      name: new FormControl<string>(lesson.name),
+      videoUrl: new FormControl<string>(lesson.videoUrl),
     });
   }
 
