@@ -1,8 +1,11 @@
 package com.lucasfturos.dto.mapper;
 
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.lucasfturos.dto.CourseDTO;
+import com.lucasfturos.dto.LessonDTO;
 import com.lucasfturos.enums.Category;
 import com.lucasfturos.model.Course;
 
@@ -13,10 +16,18 @@ public class CourseMapper {
         if (course == null) {
             return null;
         }
+        var lessons = course.getLessons()
+                .stream()
+                .map(lesson -> new LessonDTO(
+                        lesson.getId(),
+                        lesson.getName(),
+                        lesson.getVideoUrl()))
+                .collect(Collectors.toList());
         return new CourseDTO(
                 course.getId(),
                 course.getName(),
-                course.getCategory().getValue());
+                course.getCategory().getValue(),
+                lessons);
     }
 
     public Course toEntity(CourseDTO courseDTO) {

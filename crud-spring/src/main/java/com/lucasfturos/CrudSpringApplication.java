@@ -21,6 +21,7 @@ public class CrudSpringApplication {
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
 		return args -> {
 			courseRepository.deleteAll();
+
 			var c = new Course();
 			c.setName("Angular");
 			c.setCategory(Category.FRONTEND);
@@ -30,6 +31,12 @@ public class CrudSpringApplication {
 			l.setVideoUrl("111");
 			l.setCourse(c);
 			c.getLessons().add(l);
+
+			var l1 = new Lesson();
+			l1.setName("Desenvolvimento");
+			l1.setVideoUrl("2222");
+			l1.setCourse(c);
+			c.getLessons().add(l1);
 
 			courseRepository.save(c);
 		};
