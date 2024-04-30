@@ -27,19 +27,60 @@
         <mat-error>{{ getErrorMessage("category") }}</mat-error>
         }
       </mat-form-field>
-
-      <button
-        mat-flat-button
-        color="primary"
-        type="submit"
-        class="btn-submit"
-        (click)="onSubmit()"
-        [disabled]="!form.valid"
+      <mat-toolbar>
+        <span>Aulas</span>
+        <button
+          mat-icon-button
+          color="accent"
+          aria-label="Adicionar nova aula"
+          (click)="addNewLesson()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-toolbar>
+      <table
+        formArrayName="lessons"
+        *ngFor="let lesson of getLessonFormArray(); let i = index"
       >
-        Salvar
-      </button>
-
-      <button mat-raised-button (click)="onCancel()">Cancelar</button>
+        <tr [formGroupName]="i">
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-label>Título da Aula</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-label>Link do Vídeo</mat-label>
+              <span matTextPrefix>https://youtu.be/ &nbsp;</span>
+              <input matInput formControlName="videoUrl" />
+            </mat-form-field>
+          </td>
+          <td>
+            <button
+              mat-icon-button
+              color="warn"
+              aria-label="Remover aula"
+              (click)="removeLesson(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
     </form>
+
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      class="btn-submit"
+      (click)="onSubmit()"
+      [disabled]="!form.valid"
+    >
+      Salvar
+    </button>
+
+    <button mat-raised-button (click)="onCancel()">Cancelar</button>
   </mat-card-content>
 </mat-card>

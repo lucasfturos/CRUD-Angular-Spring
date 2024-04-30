@@ -5,6 +5,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  UntypedFormArray,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,9 +18,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ActivatedRoute } from '@angular/router';
 
+import { Course } from '../../model/course';
 import { Lesson } from '../../model/lesson';
 import { CoursesService } from '../../services/courses.service';
-import { Course } from '../../model/course';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-course-form',
@@ -33,6 +35,7 @@ import { Course } from '../../model/course';
     MatInputModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatTableModule,
     MatToolbarModule,
     ReactiveFormsModule,
   ],
@@ -99,6 +102,20 @@ export class CourseFormComponent {
       name: new FormControl<string>(lesson.name),
       videoUrl: new FormControl<string>(lesson.videoUrl),
     });
+  }
+
+  getLessonFormArray() {
+    return (<UntypedFormArray>this.form.get('lessons'))?.controls;
+  }
+
+  addNewLesson(): void {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.push(this.createLesson());
+  }
+
+  removeLesson(index: number): void {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.removeAt(index);
   }
 
   onSubmit(): void {
