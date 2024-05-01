@@ -12,19 +12,22 @@
           >{{ form.get("name")?.value.length || 0 }}/100</mat-hint
         >
         @if (form.get('name')?.invalid) {
-        <mat-error>{{ getErrorMessage("name") }}</mat-error>
+        <mat-error>{{
+          formUtilsService.getErrorMessage(form, "name")
+        }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Categoria do Curso</mat-label>
         <mat-select matNativeControl formControlName="category">
-          <mat-option value="" selected></mat-option>
           <mat-option value="Front-End">Front-End</mat-option>
           <mat-option value="Back-End">Back-End</mat-option>
         </mat-select>
         @if (form.get('category')?.invalid) {
-        <mat-error>{{ getErrorMessage("category") }}</mat-error>
+        <mat-error>{{
+          formUtilsService.getErrorMessage(form, "category")
+        }}</mat-error>
         }
       </mat-form-field>
       <mat-toolbar>
@@ -38,7 +41,7 @@
           <mat-icon>add</mat-icon>
         </button>
       </mat-toolbar>
-      @if (isFormArrayRequired()) {
+      @if (formUtilsService.isFormArrayRequired(form, 'lessons')) {
       <mat-error class="form-array-error"
         >Adicione pelo menos uma aula!</mat-error
       >
@@ -53,7 +56,14 @@
               <mat-label>Título da Aula</mat-label>
               <input matInput formControlName="name" />
               @if (getLessonFormArray()[i].get('name')?.invalid) {
-              <mat-error>Campo Inválido</mat-error>
+              <mat-error>{{
+                formUtilsService.getFormArrayFieldErrorMessage(
+                  form,
+                  "lessons",
+                  "name",
+                  i
+                )
+              }}</mat-error>
               }
             </mat-form-field>
           </td>
@@ -63,8 +73,15 @@
               <span matTextPrefix>https://youtu.be/ &nbsp;</span>
               <input matInput formControlName="videoUrl" />
               @if (getLessonFormArray()[i].get('videoUrl')?.invalid) {
-                <mat-error>Campo Inválido</mat-error>
-                }
+              <mat-error>{{
+                formUtilsService.getFormArrayFieldErrorMessage(
+                  form,
+                  "lessons",
+                  "videoUrl",
+                  i
+                )
+              }}</mat-error>
+              }
             </mat-form-field>
           </td>
           <td>
@@ -91,6 +108,8 @@
       Salvar
     </button>
 
-    <button mat-raised-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button (click)="formUtilsService.onCancel()">
+      Cancelar
+    </button>
   </mat-card-content>
 </mat-card>
