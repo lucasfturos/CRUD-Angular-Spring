@@ -41,17 +41,21 @@ public class CourseService {
                 .orElseThrow(() -> new NotFoundExeception(id, "Course"));
     }
 
-    public CourseDTO create(@Valid @NotNull CourseDTO course) {
+    public CourseDTO create(@Valid @NotNull CourseDTO courseDTO) {
         return courseMapper
-                .toDTO(courseRepository.save(courseMapper.toEntity(course)));
+                .toDTO(courseRepository.save(courseMapper.toEntity(courseDTO)));
     }
 
-    public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO course) {
+    public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO courseDTO) {
         return courseRepository
                 .findById(id)
                 .map(courseFound -> {
-                    courseFound.setName(course.name());
-                    courseFound.setCategory(courseMapper.convertCategoryValue(course.category()));
+                    var course = courseMapper.toEntity(courseDTO);
+                    courseFound.setName(courseDTO.name());
+                    courseFound.setCategory(
+                            courseMapper.convertCategoryValue(courseDTO.category()));
+                    courseFound.getLessons().clear();
+                    course.getLessons().forEach(courseFound.getLessons()::add);
                     return courseMapper.toDTO(courseRepository.save(courseFound));
                 })
                 .orElseThrow(() -> new NotFoundExeception(id, "Course"));

@@ -8,6 +8,7 @@ import com.lucasfturos.dto.CourseDTO;
 import com.lucasfturos.dto.LessonDTO;
 import com.lucasfturos.enums.Category;
 import com.lucasfturos.model.Course;
+import com.lucasfturos.model.Lesson;
 
 @Component
 public class CourseMapper {
@@ -40,6 +41,18 @@ public class CourseMapper {
         }
         course.setName(courseDTO.name());
         course.setCategory(convertCategoryValue(courseDTO.category()));
+        var lessons = courseDTO.lessons()
+                .stream()
+                .map(lessonDTO -> {
+                    var lesson = new Lesson();
+                    lesson.setId(lessonDTO.id());
+                    lesson.setName(lessonDTO.name());
+                    lesson.setVideoUrl(lessonDTO.videoUrl());
+                    lesson.setCourse(course);
+                    return lesson;
+                })
+                .collect(Collectors.toList());
+        course.setLessons(lessons);
         return course;
     }
 
