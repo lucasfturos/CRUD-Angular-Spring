@@ -23,3 +23,7 @@ E rode o comando para executar o serviço:
 ```
 mvn spring-boot:run
 ```
+
+## Referências
+
+[CRUD Angular + Spring - loiane.training](https://loiane.training/curso/crud-angular-spring)
