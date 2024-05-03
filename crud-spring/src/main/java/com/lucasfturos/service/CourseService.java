@@ -1,19 +1,22 @@
 package com.lucasfturos.service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.lucasfturos.dto.CourseDTO;
+import com.lucasfturos.dto.CoursePageDTO;
 import com.lucasfturos.dto.mapper.CourseMapper;
 import com.lucasfturos.exception.NotFoundExeception;
 import com.lucasfturos.repository.CourseRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Validated
 @Service
@@ -27,11 +30,15 @@ public class CourseService {
         this.courseMapper = courseMapper;
     }
 
-    public List<CourseDTO> list() {
-        return courseRepository.findAll()
-                .stream()
+    public CoursePageDTO list(@PositiveOrZero int pageNumber, @Positive @Max(50) int pageSize) {
+        var pageCourse = courseRepository.findAll(PageRequest.of(pageNumber, pageSize));
+        var courseDTOs = pageCourse.get()
                 .map(courseMapper::toDTO)
                 .collect(Collectors.toList());
+        return new CoursePageDTO(
+                courseDTOs,
+                pageCourse.getTotalElements(),
+                pageCourse.getTotalPages());
     }
 
     public CourseDTO findById(@NotNull @Positive Long id) {
