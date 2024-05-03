@@ -32,13 +32,10 @@ public class CourseService {
 
     public CoursePageDTO list(@PositiveOrZero int pageNumber, @Positive @Max(50) int pageSize) {
         var pageCourse = courseRepository.findAll(PageRequest.of(pageNumber, pageSize));
-        var courseDTOs = pageCourse.get()
+        var courses = pageCourse.get()
                 .map(courseMapper::toDTO)
                 .collect(Collectors.toList());
-        return new CoursePageDTO(
-                courseDTOs,
-                pageCourse.getTotalElements(),
-                pageCourse.getTotalPages());
+        return new CoursePageDTO(courses, pageCourse.getTotalElements(), pageCourse.getTotalPages());
     }
 
     public CourseDTO findById(@NotNull @Positive Long id) {

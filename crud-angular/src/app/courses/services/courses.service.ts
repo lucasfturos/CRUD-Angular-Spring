@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, first } from 'rxjs';
 
 import { Course } from '../model/course';
+import { CoursePage } from '../model/course-page';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +12,10 @@ export class CoursesService {
   private readonly API = 'api/courses';
   constructor(private httpClient: HttpClient) {}
 
-  list(): Observable<Course[]> {
-    return this.httpClient.get<Course[]>(this.API).pipe(
-      // first()
-      // tap((courses) => console.table(courses))
-    );
+  list(pageNumber: number = 0, pageSize: number = 10): Observable<CoursePage> {
+    return this.httpClient
+      .get<CoursePage>(this.API, { params: { pageNumber, pageSize } })
+      .pipe(first());
   }
 
   loadById(id: string): Observable<Course> {

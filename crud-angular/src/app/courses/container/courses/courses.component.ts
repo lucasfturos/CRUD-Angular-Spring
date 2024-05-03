@@ -1,20 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { catchError, Observable, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, Observable, of, tap } from 'rxjs';
 
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../shared/components/error-dialog/error-dialog.component';
 import { CoursesListComponent } from '../../components/courses-list/courses-list.component';
-import { Course } from '../../model/course';
+import { CoursePage } from '../../model/course-page';
 import { CoursesService } from '../../services/courses.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { Course } from './../../model/course';
 
 @Component({
   selector: 'app-courses',
@@ -26,15 +32,19 @@ import { ConfirmationDialogComponent } from '../../../shared/components/confirma
     MatCardModule,
     MatDialogModule,
     MatIconModule,
-    MatToolbarModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatToolbarModule,
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CoursesComponent {
-  courses$!: Observable<Course[]>;
+  courses$: Observable<CoursePage> | null = null;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  pageIndex: number = 0;
+  pageSize: number = 10;
 
   constructor(
     private coursesService: CoursesService,
@@ -46,13 +56,21 @@ export class CoursesComponent {
     this.refresh();
   }
 
-  refresh(): void {
-    this.courses$ = this.coursesService.list().pipe(
-      catchError((err) => {
-        this.onError('Erro ao carregar os cursos!');
-        return of([]);
-      })
-    );
+  refresh(
+    pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }
+  ): void {
+    this.courses$ = this.coursesService
+      .list(pageEvent.pageIndex, pageEvent.pageSize)
+      .pipe(
+        tap(() => {
+          this.pageIndex = pageEvent.pageIndex;
+          this.pageSize = pageEvent.pageSize;
+        }),
+        catchError((err) => {
+          this.onError('Erro ao carregar os cursos!');
+          return of({ courses: [], totalElements: 0, totalPages: 0 });
+        })
+      );
   }
 
   onAdd(): void {
