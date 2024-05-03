@@ -21,8 +21,7 @@ public class CrudSpringApplication {
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
 		return args -> {
 			courseRepository.deleteAll();
-
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 20; i++) {
 				var c = new Course();
 				c.setName("Angular " + i);
 				c.setCategory(Category.FRONTEND);

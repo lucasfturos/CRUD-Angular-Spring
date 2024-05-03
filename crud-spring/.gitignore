@@ -180,3 +180,6 @@ README.html
 .DS_Store
 out/
 .micronaut/
+
+# Dotenv
+.env
