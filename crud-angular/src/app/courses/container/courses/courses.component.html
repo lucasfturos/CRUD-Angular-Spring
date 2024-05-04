@@ -3,27 +3,25 @@
     <span>Cursos Disponíveis</span>
   </mat-toolbar>
 
-  <div *ngIf="courses$ | async as courses; else loading">
-    <app-courses-list
-      [courses]="courses.courses"
-      (add)="onAdd()"
-      (edit)="onEdit($event)"
-      (delete)="onDelete($event)"
-    ></app-courses-list>
+  @if(courses$ | async; as courses){
+  <app-courses-list
+    [courses]="courses.courses"
+    (add)="onAdd()"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+  ></app-courses-list>
 
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 15, 20]"
-      showFirstLastButtons
-      [pageIndex]="pageIndex"
-      [pageSize]="pageSize"
-      [length]="courses.totalElements"
-      (page)="refresh($event)"
-      aria-label="Select page of periodic elements"
-    >
-    </mat-paginator>
-  </div>
-
-  <ng-template #loading>
-    <mat-spinner></mat-spinner>
-  </ng-template>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 15, 20]"
+    showFirstLastButtons
+    [pageIndex]="pageIndex"
+    [pageSize]="pageSize"
+    [length]="courses.totalElements"
+    (page)="refresh($event)"
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+  } @else{
+  <mat-spinner></mat-spinner>
+  }
 </mat-card>
