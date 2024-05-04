@@ -57,7 +57,7 @@ export class CoursesComponent {
   }
 
   refresh(
-    pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }
+    pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 5 }
   ): void {
     this.courses$ = this.coursesService
       .list(pageEvent.pageIndex, pageEvent.pageSize)
