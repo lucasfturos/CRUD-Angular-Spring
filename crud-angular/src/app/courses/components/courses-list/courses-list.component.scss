@@ -20,6 +20,8 @@ mat-table {
 
 .btn-add {
   background: #198754;
+  color: black;
+
   margin-right: 10px;
 }
 
@@ -28,6 +30,12 @@ mat-table {
   margin-right: 10px;
 }
 
+.btn-edit {
+  background: #fb8c00;
+  color: black;
+}
+
 .btn-del {
   background: #dc3545;
+  color: #000;
 }

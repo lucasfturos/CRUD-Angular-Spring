@@ -6,8 +6,12 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatToolbarModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  template: `
+    <mat-toolbar color="primary">
+      <span>CRUD - Angular + Spring</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  `,
 })
 export class AppComponent {
   title = 'app';

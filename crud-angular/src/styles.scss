@@ -1,7 +1,18 @@
 @use "@angular/material" as mat;
-@use "sass:map";
-
 @include mat.core();
+
+$custom-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$grey-palette, 900),
+      accent: mat.define-palette(mat.$blue-palette, 600),
+      warn: mat.define-palette(mat.$red-palette, 600),
+    ),
+    typography: mat.define-typography-config(),
+  )
+);
+
+@include mat.all-component-themes($custom-dark-theme);
 
 html,
 body {
@@ -13,16 +24,3 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-$custom-dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$grey-palette, 900),
-      accent: mat.define-palette(mat.$blue-palette, 600),
-      warn: mat.define-palette(mat.$orange-palette, 600),
-    ),
-    typography: mat.define-typography-config(),
-  )
-);
-
-@include mat.all-component-themes($custom-dark-theme);

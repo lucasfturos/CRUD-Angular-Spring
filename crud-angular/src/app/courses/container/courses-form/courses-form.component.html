@@ -4,9 +4,9 @@
     <span *ngIf="id >= '0'">Editar Curso</span>
   </mat-toolbar>
   <mat-card-content>
-    <form [formGroup]="form">
-      <mat-form-field appearance="fill">
-        <mat-label>Nome do Curso</mat-label>
+    <form [formGroup]="form" class="min-width">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nome</mat-label>
         <input matInput placeholder="Ex: Angular" formControlName="name" />
         <mat-hint align="end"
           >{{ form.get("name")?.value.length || 0 }}/100</mat-hint
@@ -18,8 +18,8 @@
         }
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Categoria do Curso</mat-label>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Categoria</mat-label>
         <mat-select matNativeControl formControlName="category">
           <mat-option value="Front-End">Front-End</mat-option>
           <mat-option value="Back-End">Back-End</mat-option>
@@ -34,6 +34,7 @@
         <span>Aulas</span>
         <button
           mat-icon-button
+          class="btn-add-lesson"
           color="accent"
           aria-label="Adicionar nova aula"
           (click)="addNewLesson()"
@@ -45,14 +46,11 @@
       <mat-error class="form-array-error"
         >Adicione pelo menos uma aula!</mat-error
       >
-      }
-      <table
-        formArrayName="lessons"
-        *ngFor="let lesson of getLessonFormArray(); let i = index"
-      >
+      } @for (lesson of getLessonFormArray(); track lesson; let i = $index){
+      <table formArrayName="lessons" class="full-width">
         <tr [formGroupName]="i">
-          <td>
-            <mat-form-field appearance="fill">
+          <td class="width-65">
+            <mat-form-field appearance="fill" class="full-width input-lesson">
               <mat-label>Título da Aula</mat-label>
               <input matInput formControlName="name" />
               @if (getLessonFormArray()[i].get('name')?.invalid) {
@@ -67,8 +65,8 @@
               }
             </mat-form-field>
           </td>
-          <td>
-            <mat-form-field appearance="fill">
+          <td class="width-30">
+            <mat-form-field appearance="fill" class="full-width input-lesson">
               <mat-label>Link do Vídeo</mat-label>
               <span matTextPrefix>https://youtu.be/ &nbsp;</span>
               <input matInput formControlName="videoUrl" />
@@ -87,6 +85,7 @@
           <td>
             <button
               mat-icon-button
+              class="btn-del-lesson"
               color="warn"
               aria-label="Remover aula"
               (click)="removeLesson(i)"
@@ -96,6 +95,7 @@
           </td>
         </tr>
       </table>
+      }
     </form>
 
     <button
@@ -108,7 +108,11 @@
       Salvar
     </button>
 
-    <button mat-raised-button (click)="formUtilsService.onCancel()">
+    <button
+      mat-raised-button
+      class="btn-cancel"
+      (click)="formUtilsService.onCancel()"
+    >
       Cancelar
     </button>
   </mat-card-content>

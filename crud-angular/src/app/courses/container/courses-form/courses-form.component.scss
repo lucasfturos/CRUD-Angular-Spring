@@ -1,24 +1,56 @@
 mat-card {
-  width: 80%;
+  max-width: 85%;
   margin: 2em auto;
-  min-width: 150px;
-  display: flex;
-  align-items: center;
   text-align: center;
 }
 
-mat-form-field {
+form {
+  margin: 1em auto;
+}
+
+.full-width {
   width: 100%;
 }
 
-form {
-  margin: 10px auto;
+.width-65 {
+  width: 65%;
 }
 
-button {
-  margin-right: 10px;
+.width-30 {
+  width: 30%;
+}
+
+.input-lesson {
+  height: 80px;
+}
+
+.min-width {
+  width: 100%;
+  min-width: 150px;
 }
 
 .form-array-error {
   text-align: start;
+}
+
+.btn-add-lesson {
+  background: #198754;
+  color: #000;
+  margin-left: 10px;
+}
+
+.btn-del-lesson {
+  text-align: center;
+  margin: 1em auto;
+  margin-bottom: 40px;
+}
+
+.btn-submit,
+.btn-cancel {
+  width: 100px;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  margin-left: 10px;
 }
